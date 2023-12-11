@@ -1,15 +1,5 @@
 import sql from "#db/postgre_sql_provider.js";
 
-let isTableCreated = false
-
-async function createTableIfNeedIt() {
-    if (!isTableCreated) {
-        isTableCreated = true
-    }
-}
-
-await createTableIfNeedIt()
-
 export default {
     async createContent(ownerId, content, name) {
         const query = `

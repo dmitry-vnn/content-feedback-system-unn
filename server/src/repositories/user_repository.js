@@ -1,29 +1,5 @@
 import sql from "#db/postgre_sql_provider.js";
 
-let isTableCreated = false
-
-async function createTableIfNeedIt() {
-    if (!isTableCreated) {
-        const query = `
-            create table if not exists "user"
-            (
-                id       serial
-                    primary key,
-                login    varchar not null
-                    unique,
-                password varchar not null,
-                name     varchar not null
-            );
-        `
-
-        await sql.query(query);
-
-        isTableCreated = true
-    }
-}
-
-await createTableIfNeedIt()
-
 export default {
 
     async createUser(login, password, name) {
