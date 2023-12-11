@@ -1,5 +1,5 @@
 class ApiError {
-    error;
+    error
 
     constructor(error) {
         this.error = error;
@@ -7,10 +7,6 @@ class ApiError {
 
     get error() {
         return this.error;
-    }
-
-    toJson() {
-        return JSON.stringify({error: this.error})
     }
 }
 

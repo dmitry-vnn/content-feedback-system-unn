@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script type="module" src="js/home.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/form.css">
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="css/beautiful-form.css">
     <title>Главная</title>
 </head>
 
 <body>
 
-<h2>Здравствуйте, <%= user.name %></h2>
+<h2>Здравствуйте, <%= userName %></h2>
 
-<form method="post" enctype="multipart/form-data" action="/content">
+<form>
     <b>
         <label>Загрузить работу</label>
     </b>
-    <input type="file" name="file">
-    <input type="submit" value="Загрузить">
+    <input type="file" name="file" id="file">
+    <input type="submit" id="upload-button" value="Загрузить">
 </form>
 
 <br>
 
 <form method="get" action="/content">
-    <button type="submit" name="open-content">Посмотреть свои работы</button>
+    <button type="submit">Посмотреть свои работы</button>
 </form>
 
 <form method="get" action="/feedback">
-    <button type="submit" name="feedback-content">Оценить другие работы</button>
+    <button type="submit">Оценить другие работы</button>
 </form>
 
 <br>

@@ -35,7 +35,7 @@ export default {
     },
 
 
-    async findContentsToReview(reviewerId) {
+    async getContentToUserReview(reviewerId) {
         const contents = await contentRepository
             .findContentWithLowFeedback(reviewerId, 3);
 
@@ -72,7 +72,10 @@ export default {
 
     },
 
-    async createContent(userId, content, name) {
+    async createContent(userId, file) {
+        const name = file.originalname
+        const content = file.buffer.toString()
+
         return await contentRepository.createContent(userId, content, name);
     },
 

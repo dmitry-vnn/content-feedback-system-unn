@@ -16,12 +16,8 @@ function setFormSubmitHandler(formId, submitFormButtonId, url) {
                 return
             }
 
-            if (request.status === 500) {
-                const error = JSON.parse(request.responseText);
-                if (error && error.error) {
-                    alert(error.error)
-                }
-                return;
+            if (request.status !== 200) {
+                checkErrorAndAlertIt(request.responseText)
             }
 
             const redirectUrl = request.responseURL
@@ -36,4 +32,30 @@ function setFormSubmitHandler(formId, submitFormButtonId, url) {
     })
 }
 
-export {setFormSubmitHandler}
+function checkErrorAndAlertIt(bodyAsString) {
+    if (!bodyAsString) {
+        return false
+    }
+
+    const jsonBody = JSON.parse(bodyAsString);
+    if (!jsonBody.error) {
+        return false
+    }
+
+    alert(jsonBody.error)
+}
+
+function alertIfSuccess(bodyAsString) {
+    if (!bodyAsString) {
+        return
+    }
+
+    const jsonBody = JSON.parse(bodyAsString);
+    if (!jsonBody.success) {
+        return
+    }
+
+    alert(jsonBody.success)
+}
+
+export {setFormSubmitHandler, checkErrorAndAlertIt, alertIfSuccess}

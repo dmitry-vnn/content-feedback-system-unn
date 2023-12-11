@@ -1,28 +1,28 @@
 import multer from "multer";
 
 import contentService from "#services/content_service.js";
-import ApiError from "#errors/api_error.js";
+import validator from "#controllers/properties_validator.js";
 
 const upload = multer();
 
 export default {
 
-    async getUserContent(req, res, userId) {
-        const content = await contentService.getUserContent(userId);
-        res.json(content)
-    },
-
-    getUserContentPage(req, res, userId) {
+    getContentPage(req, res) {
         res.render("content")
     },
 
-    getFeedbackPage(req, res, userId) {
+    getFeedbackPage(req, res) {
         res.render("feedback")
     },
 
-    async getReviewContent(req, res, reviewerId) {
-        const content = await contentService.findContentsToReview(reviewerId);
-        res.json(content)
+    getContent(req, res, userId) {
+        contentService.getUserContent(userId)
+            .then(content => res.json(content))
+    },
+
+    getReviewContent(req, res, userId) {
+        contentService.getContentToUserReview(userId)
+            .then(content => res.json(content))
     },
 
     postContent(req, res, userId) {
@@ -36,34 +36,24 @@ export default {
 
             const file = req.file;
 
-            if (!file) {
-                res.status(400)
-                res.end("Select file to uploading!")
+            if (!validator.tryValidateParamsOrSendError(req, res, "file")) {
                 return;
             }
 
-            const name = file.originalname
-            const content = file.buffer.toString()
-
-            contentService.createContent(userId, content, name).then(
-                res.end()
-            )
+            contentService.createContent(userId, file)
+                .then(() => res.json({success: "Работа успешна загружена!"}))
         })
     },
 
-    postFeedback(req, res, reviewerId) {
+    postFeedback(req, res, userId) {
         const {contentId, mark, comment} = req.body
 
-        if (!(contentId && contentId && comment)) {
-            res
-                .status(400)
-                .json(new ApiError("Не все параметры были переданы!"))
-            return
+        if (!validator.tryValidateParamsOrSendError(req.body, res, "contentId", "mark", "comment")) {
+            return;
         }
 
-        contentService.createFeedback(
-            contentId, reviewerId, mark, comment
-        ).then(() => res.end())
+        contentService.createFeedback(contentId, userId, mark, comment)
+            .then(() => res.json({success: "Спасибо за ваш отзыв)"}))
 
     }
 }

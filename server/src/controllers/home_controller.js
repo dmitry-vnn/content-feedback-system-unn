@@ -2,10 +2,10 @@ import userService from "#services/user_service.js";
 
 export default {
 
-    async getHome(req, res, userId) {
-        const user = await userService.getUserProfileInfoById(userId);
-
-        res.render("home", {user: user})
+    getHomePage(req, res, userId) {
+        userService.getUserNameById(userId).then(userName =>
+            res.render("home", {userName: userName})
+        )
     },
 }
 

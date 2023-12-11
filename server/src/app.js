@@ -29,36 +29,34 @@ function configureExpress() {
 
 
 function configureRoutes() {
-    app.get("/register", authController.getRegister)
+    app.get("/register", authController.getRegisterPage)
+    app.get("/login", authController.getLoginPage)
+
     app.post("/register", authController.postRegister)
-
-    app.get("/login", authController.getLogin)
     app.post("/login", authController.postLogin)
-
     app.get("/logout", authController.getLogout)
 
+
     app.get("/", (req, res) =>
-        authController.protectRoute(req, res, homeController.getHome))
+        authController.protectRoute(req, res, homeController.getHomePage))
+
 
     app.get("/content", (req, res) =>
-        authController.protectRoute(req, res, contentController.getUserContentPage)
+        authController.protectRoute(req, res, contentController.getContentPage)
     )
 
     app.post("/content", (req, res) =>
         authController.protectRoute(req, res, contentController.postContent))
-
-    app.get("/api/content", (req, res) =>
-        authController.protectRoute(req, res, contentController.getUserContent)
-    )
-
     app.get("/feedback", (req, res) =>
         authController.protectRoute(req, res, contentController.getFeedbackPage)
     )
 
-    app.get("/api/feedback", (req, res) =>
+    app.get("/api/content", (req, res) =>
+        authController.protectRoute(req, res, contentController.getContent)
+    )
+    app.get("/api/review", (req, res) =>
         authController.protectRoute(req, res, contentController.getReviewContent)
     )
-
     app.post("/api/feedback", (req, res) =>
         authController.protectRoute(req, res, contentController.postFeedback)
     )
